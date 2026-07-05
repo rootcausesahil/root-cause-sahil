@@ -15,7 +15,7 @@ export default function Footer() {
         </p>
         <p className="mt-3 max-w-md text-sm text-muted">{siteConfig.description}</p>
 
-        <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-3">
+        <ul className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-x-8 sm:gap-y-3">
           {socialLinks.map((social) => (
             <li key={social.platform}>
               <a

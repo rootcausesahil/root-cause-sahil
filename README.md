@@ -143,3 +143,7 @@ designed on purpose, not just inverted. The user's choice is persisted to
 runs before first paint, so there's no flash of the wrong theme on a
 static export (no server-side cookie/session available to do this any
 other way).
+
+## License
+
+GPL-3.0 — see [LICENSE](./LICENSE).

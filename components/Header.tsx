@@ -1,25 +1,29 @@
 import Link from 'next/link';
 import { siteConfig, navLinks } from '@/config';
 import ThemeToggle from './ThemeToggle';
+import MobileNav from './MobileNav';
 
 /**
  * Site header: channel name/logo, primary nav, and the theme toggle.
  * Nav links come from `navLinks` in /config.ts.
+ *
+ * Below `sm`, the inline nav is replaced by `MobileNav`'s hamburger +
+ * dropdown — logo, every nav link, Contact, and the theme toggle all on
+ * one row wraps/crowds badly at phone widths.
  */
 export default function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-bg/90 backdrop-blur">
-      <div className="flex items-center justify-between gap-4 px-5 py-4 sm:px-8">
+      <div className="relative flex items-center justify-between gap-4 px-5 py-4 sm:px-8">
         <Link
           href="/"
-          className="font-display text-lg font-bold tracking-tight text-fg sm:text-xl"
+          className="font-display text-base font-bold tracking-tight text-fg sm:text-xl"
         >
-          <span className="hidden sm:inline">{siteConfig.name}</span>
-          <span className="sm:hidden">{siteConfig.shortName}</span>
+          {siteConfig.name}
         </Link>
 
         <div className="flex items-center gap-4 sm:gap-6">
-          <nav aria-label="Primary" className="flex items-center gap-4 sm:gap-6">
+          <nav aria-label="Primary" className="hidden items-center gap-4 sm:flex sm:gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -37,6 +41,7 @@ export default function Header() {
             </a>
           </nav>
           <ThemeToggle />
+          <MobileNav />
         </div>
       </div>
     </header>
