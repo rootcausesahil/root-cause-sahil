@@ -1,0 +1,55 @@
+---
+title: "Recreating the 2017 AWS S3 Outage On My Laptop"
+date: "2024-02-19"
+description: "One engineer, one typo in a debugging playbook, and enough removed capacity to take down a chunk of the internet. I rebuilt it at toy scale to see the failure for myself."
+slug: "recreating-the-2017-aws-s3-outage"
+---
+
+On February 28, 2017, an engineer at AWS ran a command to remove a small number of servers from the S3 billing subsystem in the us-east-1 region. A typo in the input meant a much larger set of servers was removed instead — including servers supporting two other S3 subsystems. The result: S3 fell over in one of the busiest regions on the internet, and took a long list of dependent services down with it.
+
+This post walks through the toy version I built to *feel* that failure mode, not just read about it.
+
+## The setup
+
+I'm not taking down real S3. Instead, I built a tiny stand-in with three pieces:
+
+- An **index service** that tracks which storage nodes own which objects
+- A **placement subsystem** that both the index and the front-end depend on
+- A **front-end** that answers `GET`/`PUT` requests by asking the index where an object lives
+
+The real outage was so severe because removing capacity didn't just drop data — it forced a full restart of the index and placement subsystems, and those hadn't been restarted at that scale in years. Restart time turned into an extended, cascading outage instead of a brief blip.
+
+## Reproducing the cascade
+
+I wrote a small script that mimics the original command:
+
+```bash
+./remove-capacity.sh --subsystem=billing --count=5
+```
+
+Except, like the original incident, a bad input expands the blast radius:
+
+```bash
+# what was intended
+./remove-capacity.sh --subsystem=billing --hosts=web-host-3,web-host-4
+
+# what actually ran
+./remove-capacity.sh --subsystem=billing --hosts=web-host-*
+```
+
+The glob matched far more than intended, tearing down index nodes and placement nodes alongside the billing hosts. My toy index service dropped below its minimum quorum, and — just like the real thing — refused to serve reads until it fully rebuilt its metadata from scratch.
+
+## What actually broke
+
+It wasn't capacity. It was **the assumption that restarts are cheap.** The real S3 index and placement systems had grown so large that a full restart — verifying and rebuilding metadata for every object — took far longer than anyone expected, because that path was almost never exercised.
+
+> The bug wasn't the typo. The typo just triggered a code path nobody had load-tested in years.
+
+## The takeaway
+
+Two things I keep coming back to when I design systems now:
+
+1. **Guardrails on destructive commands** matter more than the command being "used correctly 99.9% of the time." Minimum-capacity checks would have stopped this outright.
+2. **Cold-start paths are production paths.** If a subsystem can restart, its restart behavior at full scale needs to be tested at full scale — not assumed safe because it's rare.
+
+Full teardown of the toy cluster, the input-validation guardrail I added afterward, and the actual recovery timeline are all in the video.

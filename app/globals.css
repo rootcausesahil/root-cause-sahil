@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * THEME VARIABLES
+ * ───────────────
+ * Every color in the site is defined here, once per theme, and consumed
+ * through Tailwind's `bg-bg`, `text-fg`, `border-border`, etc. (see
+ * tailwind.config.ts). Never hardcode a color in a component — add a
+ * variable here instead, so both themes stay intentional.
+ *
+ * `:root` mirrors the dark values as a no-JS fallback (default theme is
+ * dark). The inline script in app/layout.tsx sets `data-theme` on <html>
+ * before first paint, so in practice `[data-theme='dark']` is what applies.
+ */
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-bg: #0b0b0d;
+  --color-bg-raised: #18181c;
+  --color-fg: #f5f4f0;
+  --color-muted: #9a9aa5;
+  --color-accent: #ff5a3c;
+  --color-border: #27272e;
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+
+  --color-bg: #f7f4ee;
+  --color-bg-raised: #ffffff;
+  --color-fg: #17171a;
+  --color-muted: #5c5c66;
+  --color-accent: #d9431f;
+  --color-border: #e2e0da;
+}
+
+html {
+  background-color: var(--color-bg);
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+}
+
+/* Smooth theme switch instead of colors snapping. */
+body,
+header,
+footer {
+  transition:
+    background-color 200ms ease,
+    color 200ms ease,
+    border-color 200ms ease;
+}

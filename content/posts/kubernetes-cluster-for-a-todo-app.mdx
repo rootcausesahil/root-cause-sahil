@@ -1,0 +1,54 @@
+---
+title: "I Built a Kubernetes Cluster to Run a Todo App (And Regretted Everything)"
+date: "2024-05-03"
+description: "Three nodes, a service mesh, and a horizontal pod autoscaler, all in service of tracking whether I bought milk."
+slug: "kubernetes-cluster-for-a-todo-app"
+---
+
+Somewhere along the way, "learn Kubernetes properly" turned into "deploy a todo list app across a three-node cluster with a service mesh, centralized logging, and an autoscaler tuned for a workload that peaks at one request per hour: me, checking if I bought milk."
+
+This is that story, and the entirely unnecessary architecture diagram that came with it.
+
+## The stack, for a todo app
+
+- **3 nodes** — one control plane, two workers, running on spare hardware under my desk
+- **Istio** for a service mesh, because a todo app absolutely needs mutual TLS between its two pods
+- **Horizontal Pod Autoscaler** configured to scale from 1 to 10 replicas
+- **Prometheus + Grafana** to monitor CPU usage that never leaves single digits
+
+```yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: todo-app-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: todo-app
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+```
+
+Ten replicas, ready to serve a todo app that has exactly one user. Me.
+
+## Where it actually got interesting
+
+The mesh sidecar injection quietly broke my liveness probes — Istio's proxy took a few hundred milliseconds longer to come up than the app container, so Kubernetes kept killing pods it thought had failed to start. Nothing in the docs made this obvious; it took reading through `kubectl describe pod` output line by line to notice the probe was firing before the sidecar had opened its ports.
+
+> The todo app itself never had a bug. Everything I built *around* it did.
+
+That's the real lesson buried under the joke premise: most of the complexity — and most of the outages — in a system like this comes from the infrastructure wrapped around the thing you actually wanted to run, not from the thing itself.
+
+## Was it worth it
+
+No. It was extremely worth it. I now understand HPA scaling behavior, sidecar startup ordering, and why you should always set `startupProbe` separately from `livenessProbe`, all because I refused to just use a text file for my todo list.
+
+Full cluster setup, the sidecar debugging session, and the final (absurd) architecture diagram are in the video.
