@@ -107,10 +107,10 @@ app/blog/[slug]/page.tsx   # Individual blog post, renders MDX
 components/                # Header, Footer, Hero, Marquee, PostCard, etc.
 app/icon.png               # Favicon (64x64)
 app/apple-icon.png         # iOS home-screen icon (180x180)
-scripts/generate-icons.mjs # Regenerates the two files above from code
+public/logo.svg            # Full logo mark, used in Header
 ```
 
-## Favicon / app icon
+## Favicon / app icon / logo
 
 `app/icon.png` and `app/apple-icon.png` are plain static PNGs — Next.js
 picks up files with these exact names in `app/` automatically and adds
@@ -122,15 +122,11 @@ infer content type from the file extension, so an extensionless file can
 fail to serve as an image (Cloudflare's static-asset serving included).
 Plain `.png` files sidestep that entirely.
 
-To change the design, edit `scripts/generate-icons.mjs` (it draws the
-mark with the same `ImageResponse` engine Next uses internally, just run
-standalone) and re-run:
-
-```bash
-node scripts/generate-icons.mjs
-```
-
-That overwrites `app/icon.png` and `app/apple-icon.png` in place.
+The logo/icon design itself lives in the separate `root-cause-sahil-logo`
+repo (master SVG + every exported size — favicon, apple-touch-icon,
+Android/PWA, YouTube/Instagram avatar, video watermark). To update the
+design, regenerate exports there and copy the relevant files into
+`app/icon.png`, `app/apple-icon.png`, and `public/logo.svg` here.
 
 ## Notes on the theme system
 

@@ -17,8 +17,10 @@ export default function Header() {
       <div className="relative flex items-center justify-between gap-4 px-5 py-4 sm:px-8">
         <Link
           href="/"
-          className="font-display text-base font-bold tracking-tight text-fg sm:text-xl"
+          className="flex items-center gap-2.5 font-display text-base font-bold tracking-tight text-fg sm:text-xl"
         >
+          {/* eslint-disable-next-line @next/next/no-img-element -- static export, no next/image optimization anyway */}
+          <img src="/logo.svg" alt="" width={36} height={36} className="h-9 w-9 rounded-full" />
           {siteConfig.name}
         </Link>
 

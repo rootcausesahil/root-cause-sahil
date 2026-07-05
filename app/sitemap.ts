@@ -9,17 +9,22 @@ export const dynamic = 'force-static';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const posts = getAllPosts();
+  // Homepage shows the latest posts, so its most recent genuine change is
+  // whenever the newest post was published — using build time instead would
+  // mark it "modified" on every deploy even when nothing changed, which is
+  // exactly what search engines advise against for lastmod.
+  const latestPostDate = posts[0]?.date ? new Date(posts[0].date) : new Date();
 
   return [
     {
       url: siteConfig.url,
-      lastModified: new Date(),
+      lastModified: latestPostDate,
       changeFrequency: 'weekly',
       priority: 1,
     },
     {
       url: `${siteConfig.url}/blog`,
-      lastModified: posts[0]?.date ? new Date(posts[0].date) : new Date(),
+      lastModified: latestPostDate,
       changeFrequency: 'weekly',
       priority: 0.8,
     },
