@@ -63,8 +63,7 @@ export const aboutParagraphs = [
  * `null` to remove it from the page entirely — the About section just skips
  * rendering when this is falsy, no other edits needed.
  */
-export const consultingNote: string | null =
-  "Currently available for select consulting engagements — see Contact above.";
+export const consultingNote: string | null = null;
 
 /**
  * Top-level nav links shown in the header. `href` is site-relative.
