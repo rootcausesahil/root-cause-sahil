@@ -49,6 +49,14 @@ export default function SocialIcon({ platform }: { platform: Platform }) {
           <path d="M8 9l-3 3 3 3M16 9l3 3-3 3M13.5 6l-3 12" />
         </svg>
       );
+    case 'Discord':
+      return (
+        <svg {...sharedProps}>
+          <path d="M7 8.5C9.5 7.2 14.5 7.2 17 8.5L17.8 15.5C15.5 17 8.5 17 6.2 15.5z" />
+          <circle cx="10" cy="12.3" r="1" fill="currentColor" stroke="none" />
+          <circle cx="14" cy="12.3" r="1" fill="currentColor" stroke="none" />
+        </svg>
+      );
     case 'Twitch':
       return (
         <svg {...sharedProps}>

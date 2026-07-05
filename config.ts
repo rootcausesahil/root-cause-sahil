@@ -89,6 +89,11 @@ export const socialLinks = [
     href: 'https://github.com/rootcausesahil',
   },
   {
+    platform: 'Discord',
+    handle: '@rootcausesahil',
+    href: 'https://discord.gg/rootcausesahil',
+  },
+  {
     platform: 'Twitch',
     handle: '@rootcausesahil',
     href: 'https://www.twitch.tv/rootcausesahil',
