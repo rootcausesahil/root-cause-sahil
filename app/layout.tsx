@@ -32,12 +32,20 @@ export const metadata: Metadata = {
     template: `%s — ${siteConfig.shortName}`,
   },
   description: siteConfig.description,
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     title: siteConfig.name,
     description: siteConfig.description,
     url: siteConfig.url,
     siteName: siteConfig.name,
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: siteConfig.name,
+    description: siteConfig.description,
   },
 };
 

@@ -6,6 +6,9 @@ import PostCard from '@/components/PostCard';
 export const metadata: Metadata = {
   title: 'Blog',
   description: 'Every post, newest first.',
+  alternates: {
+    canonical: '/blog',
+  },
 };
 
 export default function BlogIndexPage() {
