@@ -2,7 +2,7 @@
 
 Personal site for the "Root Cause: Sahil" YouTube channel. Next.js (App
 Router) + TypeScript + Tailwind CSS, statically exported and deployed to
-Cloudflare Pages. No CMS, no database — blog posts are `.mdx` files in
+Cloudflare (Workers, static assets). No CMS, no database — blog posts are `.mdx` files in
 `/content/posts`, and all editable copy (name, tagline, socials, marquee
 phrases) lives in one file: `config.ts`.
 
@@ -66,23 +66,23 @@ npm run preview  # serve the built ./out folder locally (npx serve out)
 npm run lint     # next lint
 ```
 
-## (d) Deploy to Cloudflare Pages
+## (d) Deploy to Cloudflare
 
 This project uses `output: 'export'` (see `next.config.mjs`), so `next build`
-produces a fully static site in `./out` — no Cloudflare-specific adapter or
-Node runtime needed.
+produces a fully static site in `./out`. Workers and Pages are unified on
+Cloudflare now, so this deploys as a Worker serving static assets, configured
+by `wrangler.jsonc` (`assets.directory: "./out"`) — no Node runtime needed.
 
-**Cloudflare Pages dashboard setup:**
+**Cloudflare dashboard setup:**
 
 1. Push this repo to GitHub (or GitLab).
-2. In the Cloudflare dashboard: **Workers & Pages → Create → Pages → Connect to Git**, and pick this repo.
+2. In the Cloudflare dashboard: **Workers & Pages → Create → Connect to Git**, and pick this repo.
 3. Build settings:
-   - **Framework preset:** Next.js (Static HTML Export) — or just set the fields manually:
    - **Build command:** `npm run build`
-   - **Build output directory:** `out`
+   - **Deploy command:** `npx wrangler deploy` (required — picks up `wrangler.jsonc`)
 4. Deploy. Cloudflare rebuilds and redeploys automatically on every push.
 
-**Custom domain:** in the Pages project, go to **Custom domains** and add
+**Custom domain:** in the project, go to **Custom domains** and add
 `rootcausesahil.com` (and `www.rootcausesahil.com` if you want that too),
 then follow Cloudflare's DNS instructions.
 
@@ -90,7 +90,7 @@ then follow Cloudflare's DNS instructions.
 
 ```bash
 npm run build
-npx wrangler pages deploy out --project-name=root-cause-sahil
+npx wrangler deploy
 ```
 
 ## Project structure
@@ -119,7 +119,8 @@ the right `<link>` tags, no config needed. They're deliberately **not**
 with `output: 'export'`, those export as extensionless files (`out/icon`,
 `out/apple-icon`), and most static hosts — Cloudflare Pages included —
 infer content type from the file extension, so an extensionless file can
-fail to serve as an image. Plain `.png` files sidestep that entirely.
+fail to serve as an image (Cloudflare's static-asset serving included).
+Plain `.png` files sidestep that entirely.
 
 To change the design, edit `scripts/generate-icons.mjs` (it draws the
 mark with the same `ImageResponse` engine Next uses internally, just run

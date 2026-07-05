@@ -6,13 +6,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Personal site for "Root Cause: Sahil" — a channel recreating famous internet outages
 and building deliberately over-engineered software. Next.js 15 (App Router) + Tailwind, statically
-exported and deployed to Cloudflare Pages (domain: rootcausesahil.com). There is no backend: every
-page is pre-rendered HTML, and blog content is plain `.mdx` files (no CMS, no database).
+exported and deployed to Cloudflare (domain: rootcausesahil.com) via the unified Workers/Pages
+platform. There is no backend: every page is pre-rendered HTML, and blog content is plain `.mdx`
+files (no CMS, no database).
 
 **Project status:** feature-complete and building cleanly. All pages (`/`, `/blog`, `/blog/[slug]`)
 exist, dependencies are installed, and `npm run build` produces a verified static export in `./out`
 (4 routes prerendered: home, blog index, and 2 example posts). `README.md` covers adding posts,
-editing config, running locally, and deploying to Cloudflare Pages.
+editing config, running locally, and deploying to Cloudflare.
 
 ## Commands
 
@@ -35,8 +36,12 @@ first if a build looks wrong, then `rm -rf .next out` and rebuild clean.
 
 - **Static export only.** `next.config.mjs` sets `output: 'export'` and `trailingSlash: true`, and
   disables `next/image` optimization (`images.unoptimized`) because there's no server at runtime —
-  everything must resolve to static files deployable to Cloudflare Pages. Don't add API routes,
-  middleware, or anything else that needs a Node runtime; it won't work in this deployment model.
+  everything must resolve to static files. Don't add API routes, middleware, or anything else that
+  needs a Node runtime; it won't work in this deployment model.
+  Deployed via `wrangler.jsonc`, which declares a Worker serving the `./out` directory as static
+  assets (`assets.directory`) — Cloudflare's Git-connected build runs `npm run build` then
+  `npx wrangler deploy`. (Workers and Pages are unified now, so a static-export site like this
+  deploys as a Worker rather than through the old standalone Pages upload flow.)
 
 - **`config.ts` is the single source of truth for site copy.** Channel name, tagline, bio, social
   links, nav links, and marquee ticker phrases all live there. Components read from `siteConfig`,
