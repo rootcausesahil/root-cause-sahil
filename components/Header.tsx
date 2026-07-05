@@ -29,6 +29,12 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
+            <a
+              href={`mailto:${siteConfig.contactEmail}`}
+              className="text-sm font-medium uppercase tracking-wide text-muted transition-colors hover:text-accent"
+            >
+              Contact
+            </a>
           </nav>
           <ThemeToggle />
         </div>

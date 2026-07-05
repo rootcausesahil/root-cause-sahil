@@ -29,6 +29,14 @@ export default function Footer() {
               </a>
             </li>
           ))}
+          <li>
+            <a
+              href={`mailto:${siteConfig.contactEmail}`}
+              className="text-sm font-semibold uppercase tracking-wide text-muted transition-colors hover:text-accent"
+            >
+              Contact
+            </a>
+          </li>
         </ul>
 
         <p className="mt-12 text-xs uppercase tracking-wide text-muted">

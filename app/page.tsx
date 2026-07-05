@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { aboutParagraphs } from '@/config';
+import { aboutParagraphs, consultingNote } from '@/config';
 import { getAllPosts } from '@/lib/posts';
 import Hero from '@/components/Hero';
 import Marquee from '@/components/Marquee';
@@ -25,6 +25,11 @@ export default function HomePage() {
             <p key={i}>{paragraph}</p>
           ))}
         </div>
+        {consultingNote && (
+          <p className="mt-6 max-w-2xl text-sm font-semibold uppercase tracking-wide text-accent">
+            {consultingNote}
+          </p>
+        )}
       </section>
 
       {/* Latest posts */}

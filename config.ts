@@ -41,6 +41,9 @@ export const siteConfig = {
 
   /** Used for footer copyright and default author metadata. */
   author: 'Sahil',
+
+  /** Contact email — Header/Footer "Contact" links open a mailto: to this address. */
+  contactEmail: 'contact@rootcausesahil.com',
 } as const;
 
 /**
@@ -53,6 +56,15 @@ export const aboutParagraphs = [
   "By night, I reconstruct infamous engineering failures to uncover the real root cause, then build deliberately over-engineered (and mostly useless) software just to see what breaks.",
   "If you've ever wondered how billion-dollar outages happen—or why simple systems become beautifully complicated—you're in the right place.",
 ] as const;
+
+/**
+ * Optional one-line availability note shown at the end of the About section
+ * on the home page (e.g. for consulting/freelance availability). Set to
+ * `null` to remove it from the page entirely — the About section just skips
+ * rendering when this is falsy, no other edits needed.
+ */
+export const consultingNote: string | null =
+  "Currently available for select consulting engagements — see Contact above.";
 
 /**
  * Top-level nav links shown in the header. `href` is site-relative.
