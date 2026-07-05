@@ -55,3 +55,59 @@ footer {
     color 200ms ease,
     border-color 200ms ease;
 }
+
+/*
+ * NEUBRUTALIST "PRESS" BUTTON
+ * ───────────────────────────
+ * Hard, unblurred offset shadow (not a soft box-shadow blur) that shrinks
+ * and shifts on hover/active, so the element reads as physically pressed
+ * toward its own shadow. Uses --color-fg as the shadow "ink" so it adapts
+ * to both themes automatically. Apply to any button/link that should feel
+ * tactile — square/near-square corners are part of the look, don't round
+ * these past a couple of px.
+ */
+.btn-press {
+  position: relative;
+  box-shadow: 4px 4px 0 var(--color-fg);
+  transition:
+    transform 80ms ease,
+    box-shadow 80ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+}
+.btn-press:hover {
+  box-shadow: 2px 2px 0 var(--color-fg);
+  transform: translate(2px, 2px);
+}
+.btn-press:active {
+  box-shadow: 0 0 0 var(--color-fg);
+  transform: translate(4px, 4px);
+}
+
+/*
+ * STAGGERED FADE-UP ENTRANCE
+ * ──────────────────────────
+ * Pair with an inline `--stagger-index` custom property per item (e.g. a
+ * grid of cards) to get a cascading left-to-right/top-to-bottom reveal —
+ * each item's animation-delay is index * 80ms. Respects
+ * prefers-reduced-motion by skipping the animation entirely.
+ */
+@keyframes fade-up-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.fade-up-in {
+  animation: fade-up-in 0.4s ease-out both;
+  animation-delay: calc(var(--stagger-index, 0) * 80ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  .fade-up-in {
+    animation: none;
+  }
+}

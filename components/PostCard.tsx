@@ -13,13 +13,22 @@ function formatDate(dateString: string): string {
 /**
  * Card used in the blog grid (home "Latest Posts" and /blog index).
  * Accepts anything with post frontmatter — pass a full Post or just its
- * frontmatter fields.
+ * frontmatter fields. `index` (position in the grid) drives a staggered
+ * fade-up entrance — see `.fade-up-in` in globals.css — so cards cascade
+ * in left-to-right/row-by-row instead of popping in all at once.
  */
-export default function PostCard({ post }: { post: PostFrontmatter }) {
+export default function PostCard({
+  post,
+  index = 0,
+}: {
+  post: PostFrontmatter;
+  index?: number;
+}) {
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group flex flex-col justify-between gap-6 border border-border bg-bg-raised p-6 transition-colors hover:border-accent sm:p-8"
+      style={{ '--stagger-index': index } as React.CSSProperties}
+      className="fade-up-in group flex flex-col justify-between gap-6 border border-border bg-bg-raised p-6 transition-colors hover:border-accent sm:p-8"
     >
       <div>
         <time

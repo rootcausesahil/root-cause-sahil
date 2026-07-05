@@ -22,8 +22,8 @@ export default function BlogIndexPage() {
       </h1>
 
       <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {posts.map((post) => (
-          <PostCard key={post.slug} post={post} />
+        {posts.map((post, i) => (
+          <PostCard key={post.slug} post={post} index={i} />
         ))}
       </div>
     </section>

@@ -50,8 +50,8 @@ export default function HomePage() {
         </div>
 
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {latestPosts.map((post) => (
-            <PostCard key={post.slug} post={post} />
+          {latestPosts.map((post, i) => (
+            <PostCard key={post.slug} post={post} index={i} />
           ))}
         </div>
       </section>

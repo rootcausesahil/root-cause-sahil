@@ -9,7 +9,7 @@ import ThemeToggle from './ThemeToggle';
 export default function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-bg/90 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-8">
+      <div className="flex items-center justify-between gap-4 px-5 py-4 sm:px-8">
         <Link
           href="/"
           className="font-display text-lg font-bold tracking-tight text-fg sm:text-xl"
