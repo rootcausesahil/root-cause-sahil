@@ -11,7 +11,7 @@ export default function ConsoleEasterEgg() {
   useEffect(() => {
     console.log(
       '%c🔥 ROOT CAUSE ANALYSIS: INITIATED',
-      'font-size: 18px; font-weight: 900; color: #ff5a3c;',
+      'font-size: 18px; font-weight: 900; color: #3ecf8e;',
     );
     console.log(
       '%cIncident: you opened devtools.\nSeverity: SEV-4 (curiosity).\nRoot cause: probably just wanted to see how this was built.',
@@ -19,7 +19,7 @@ export default function ConsoleEasterEgg() {
     );
     console.log(
       '%cSource: https://github.com/rootcausesahil',
-      'font-size: 12px; color: #ff5a3c;',
+      'font-size: 12px; color: #3ecf8e;',
     );
   }, []);
 
