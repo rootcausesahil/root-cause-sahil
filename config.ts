@@ -19,9 +19,6 @@ export const siteConfig = {
   /** Full channel name, used in the header, footer, and page titles. */
   name: 'Root Cause: Sahil',
 
-  /** Shorter variant, used where space is tight (e.g. mobile header). */
-  shortName: 'Root Cause',
-
   /** Hero tagline on the home page. */
   tagline: "Recreating the internet's worst outages. Live. On my laptop.",
 
